@@ -1,0 +1,141 @@
+22:25 09-11-202222:25 09-11-202222:25 09-11-202222:25 09-11-2022//	Enter the answer in any programming language you desire
+from flask import Flask , render_template, request
+from passlib.hash import sha256_crypt
+import mysql.connector as mariadb
+import os
+import operator
+app = Flask(__name__)
+mariadb_connect = mariadb.connect(user='snehal',password='123',database='login')
+@app.route('/')
+def home();
+    if not seesion.get('logged_in');
+        return render_template('login.html')
+        else:
+            return render_template('index.html')
+            
+@app.route('/login',methods=['POST'])
+def do_admin_login():
+    login = request.form
+    
+    userName=login['username']
+    password=login['password']
+    
+    cur = mariadb_connect.cursor(buffered=True)
+    data = cur.execute('SELECT * FROM Login WHERE username=%s',(username))
+    data = cur.fetchone()[2]
+    
+    if sha256_crypt.verify(password,data):
+        account = True
+        
+    if account:
+        session['logged_in'] = True
+    else:
+        flash('wrong password !')
+        return home()
+        
+    @app.route('logout')
+    def logout():
+        session['logged_in'] = False
+        return home()
+        
+    if __name__ == "__main__":
+        app.secret_key = os.urandom(12)
+        app.run(debug=False,host='0.0.0.0',port=5000)
+        
+        
+3.
+import os
+fileitem = form['filename']
+if fileitem.filename:
+    fn = os.path.basename(fileitem.filename)
+    open(fn, 'wb').write(fileitem.file.read())
+    
+4.
+image_file = st.fileUploader("upload an image",type=['png','jpeg','.py'])
+if image_file is not None:
+    file_details = {"FileName":image_file.name,"FileType":image_file.type} 
+    st.write(file_details)
+    img = load_image(image_file)
+    st.image(img,height=250,width=250)
+with open(os.path.join("tempDir",image_file.name),"wb") as f:
+    f.write(image_file.getbuffer())
+    st.success("saved file")
+    
+5.
+import os
+from flask import Flask, render_template, request , redirect, url_for , send_from_dierctory
+from werkzeug import secure_filename
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = './uploads/'
+app.config['ALLOWED_EXTENSIONS'] = set.(['txt' , 'arw'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.',1)[1] in app.config['ALLOWED_EXTENSIONS']
+@app.route('/')
+def index():
+    return render_template('index.html')
+app.route('/upload', methods = ['POST'])
+
+def upload():
+    uploaded_files = request.files.getlist("file[]")
+    filenames = []
+    for file in uploaded_files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOADED_FOLDER'], filename))
+            filenames.append(filename)
+            
+    return render_template('uploade.html',filenames = filenames)
+
+@app.route('/ks_test',methods = ['POST'])
+
+def ks_test(filenames):
+    return render_template('foo.html' , content = filenames)
+if __name__ == '__main__':
+    app.run(
+        debug = True
+        )
+        
+index.html
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<link href = "bootstrap//3.0.0/css/bootstrap.min.css"
+rel = "stylesheet">
+
+</haed>
+<body>
+<div class = "Container">
+<div cl;ass = "header">
+<h3 class = "test-muted">how to upload a file.</h3>
+</div>
+<hr/>
+<div>
+<form action = "upload" method = "post" enctype = "multi part/form-data">
+<input type = "file" multiple = "" name = "file[]" class = "span3"/>
+<br/>
+<input type = "submit" value = "upload" class = "span2"/>
+</form>
+</div>
+</div>
+</body> 
+</html>
+    
+6. delete file
+import os
+if os.path.exists("foo.html" , "upload.html"):
+    os.remove("foo.html")
+    print("file deleted!!!")
+else:
+    print("file does not exist")
+    
+7. download file using url
+
+import requests
+url = ""
+r = requests.get(url,allow_redirects=True)
+
+open('faebook.ico' , 'wb').write(r.content)
+    
+    
